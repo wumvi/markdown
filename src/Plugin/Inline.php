@@ -2,7 +2,7 @@
 
 namespace Core\Markdown\Plugin;
 
-interface InlinePlugin
+interface Inline
 {
     public function parse(string $line): string;
 }

@@ -2,7 +2,7 @@
 
 namespace Core\Markdown\Plugin;
 
-class Highlight implements InlinePlugin
+class Highlight implements Inline
 {
     public function parse(string $line): string
     {

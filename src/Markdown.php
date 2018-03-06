@@ -3,7 +3,7 @@
 namespace Core\Markdown;
 
 use Core\Markdown\Plugin\BlockPlugin;
-use Core\Markdown\Plugin\InlinePlugin;
+use Core\Markdown\Plugin\Inline;
 use Core\Markdown\Result\InlineResult;
 use Core\Markdown\Result\SimpleResult;
 
@@ -15,7 +15,7 @@ class Markdown
     private $blockPlugins = [];
 
     /**
-     * @var InlinePlugin[]
+     * @var Inline[]
      */
     private $inlinePlugins = [];
 
@@ -33,7 +33,7 @@ class Markdown
         $this->blockPlugins[] = $plugin;
     }
 
-    public function addInlinePlugin(InlinePlugin $plugin): void
+    public function addInlinePlugin(Inline $plugin): void
     {
         $this->inlinePlugins[] = $plugin;
     }

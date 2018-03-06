@@ -2,15 +2,15 @@
 
 namespace Core\Markdown\Plugin;
 
-abstract class BlockAbstractPlugin implements BlockPlugin
+abstract class BlockAbstract implements BlockPlugin
 {
     /**
-     * @var InlinePlugin[]
+     * @var Inline[]
      */
     protected $inlinePlugins = [];
 
     /**
-     * @param InlinePlugin[] $plugins
+     * @param Inline[] $plugins
      */
     public function setInlinePlugins(array $plugins): void
     {

@@ -2,7 +2,7 @@
 
 namespace Core\Markdown\Plugin;
 
-class Bold implements InlinePlugin
+class Bold implements Inline
 {
     public function parse(string $line): string
     {

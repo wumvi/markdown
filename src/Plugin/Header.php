@@ -2,9 +2,10 @@
 
 namespace Core\Markdown\Plugin;
 
+use Core\Markdown\Result\HeaderResult;
 use Core\Markdown\Result\SimpleResult;
 
-class Header extends BlockAbstractPlugin
+class Header extends BlockAbstract
 {
     const MATCH = '/^(?\'level\'#{1,6})(?\'text\'.*)$/';
 
@@ -18,11 +19,10 @@ class Header extends BlockAbstractPlugin
         $line = $lines[$pos];
         preg_match(self::MATCH, $line, $match);
         $level = strlen($match['level']);
-        $text = '<h' . $level . ' class="txt-header txt-header--level' . $level . '">' .
-            $this->inlinePluginAction(trim($match['text'])) .
-            '</h' . $level . '>';
+        $caption = $this->inlinePluginAction(trim($match['text']));
+        $text = '<h' . $level . ' class="txt-header txt-header--level' . $level . '">' . $caption . '</h' . $level . '>';
 
-        return new SimpleResult($text, $pos);
+        return new HeaderResult($text, $pos, $caption);
     }
 
     private function inlinePluginAction($textRaw): string

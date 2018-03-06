@@ -2,7 +2,7 @@
 
 namespace Core\Markdown\Plugin;
 
-class Link implements InlinePlugin
+class Link implements Inline
 {
     public function parse(string $line): string
     {

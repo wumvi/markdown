@@ -1,0 +1,24 @@
+{
+  "name": "wumvi/markdown",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Core\\Markdown\\": "src"
+    }
+  },
+  "require": {
+    "php": "^7.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "squizlabs/php_codesniffer": "*"
+  },
+  "version": "1.0.0",
+  "authors": [
+	{
+		"name": "Kozlenko Vitaliy",
+		"role": "Developer"
+	}
+  ],
+  "license": "MIT"
+}

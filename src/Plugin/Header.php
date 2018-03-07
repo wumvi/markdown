@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Core\Markdown\Plugin;
 
@@ -11,7 +12,7 @@ class Header extends BlockAbstract
 
     public function match(string $line): bool
     {
-        return preg_match(self::MATCH, $line);
+        return (bool) preg_match(self::MATCH, $line);
     }
 
     public function parse(array $lines, int $pos): SimpleResult

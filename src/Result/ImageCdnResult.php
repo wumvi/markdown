@@ -1,23 +1,26 @@
 <?php
+declare(strict_types=1);
 
 namespace Core\Markdown\Result;
+
+use Core\Markdown\Model\ImageJsonInfo;
 
 class ImageCdnResult extends SimpleResult
 {
     /**
-     * @var string
+     * @var ImageJsonInfo
      */
-    private $url;
+    private $info;
 
-    public function __construct(string $text, int $pos, string $url)
+    public function __construct(string $text, int $pos, ImageJsonInfo $info)
     {
         parent::__construct($text, $pos);
 
-        $this->url = $url;
+        $this->info = $info;
     }
 
-    public function getUrl(): string
+    public function getInfo(): ImageJsonInfo
     {
-        return $this->url;
+        return $this->info;
     }
 }

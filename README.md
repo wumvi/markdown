@@ -1,21 +1,78 @@
-# Базовые модели
+### Пример использования
+```php
+<?php
 
-[![Latest Stable Version](https://poser.pugx.org/wumvi/core.markdown/v/stable?format=flat-square)](https://packagist.org/packages/wumvi/core.markdown)
-[![GitHub issues](https://img.shields.io/github/issues/wumvi/core.markdown.svg?style=flat-square)](https://github.com/wumvi/core.markdown/issues)
-[![GitHub license](https://img.shields.io/github/license/wumvi/core.markdown.svg?style=flat-square)](https://github.com/wumvi/core.markdown/blob/master/LICENSE)
-[![Build status](https://travis-ci.org/wumvi/core.markdown.svg?branch=master)](https://travis-ci.org/wumvi/core.markdown)
-[![codecov](https://codecov.io/gh/wumvi/core.markdown/branch/master/graph/badge.svg)](https://codecov.io/gh/wumvi/core.markdown)
+use Core\Markdown\Markdown;
+use Core\Markdown\Plugin\ImageCdn;
+use Core\Markdown\Plugin\Header;
+use Core\Markdown\Plugin\Link;
+use Core\Markdown\Plugin\Bold;
+use Core\Markdown\Plugin\Example;
 
-Базовые модели
+include 'vendor/autoload.php';
 
-## Install
+$markdown = new Markdown();
+$markdown->addInlinePlugin(new Link());
+$markdown->addInlinePlugin(new Bold());
 
-Установка с репозитория 
-
-### Clone
-Clone the repo to a directory
+$markdown->addBlockPlugin(new Header());
+$markdown->addBlockPlugin(new Example());
+$markdown->addBlockPlugin(new ImageCdn('https://msk.cdn.wumvi.com/data/', ImageCdn::TYPE_SIMPLE));
+echo $markdown->parse('## caption');
 ```
-git clone https://github.com/wumvi/core.markdown.git
+
+
+
+### Поддерживаемые теги
+
+#### Заголовки
+##### 
+```
+# Заголовок первого уровня
+## Заголовок второго уровня
+### Заголовок третьего уровня
 ```
 
-### Composer update
+#### Ссылка
+```
+[caption](link)
+``` 
+
+#### Выделение
+```
+`выделено`
+``` 
+
+#### Bold
+```
+**bold**
+``` 
+
+#### ImageCdn
+```
+[img-bucket-imageId]
+```
+где можно указать доп. параметры
+
+nocaption - без названия изображения
+
+nometa - без мета информации
+
+main - главное изображение статьи
+
+#### Wrap
+Вставка блока
+```
+{;class}
+```
+
+Обёртка текста
+```
+{;class phase}
+```
+
+#### Динамичные шаблоны
+
+```
+[;js--anim param=1&url=wm]
+```

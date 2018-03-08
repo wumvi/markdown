@@ -109,7 +109,7 @@ class Markdown
         return $this->buffer;
     }
 
-    private function inlinePluginAction($textRaw): string
+    private function inlinePluginAction(string $textRaw): string
     {
         $text = $textRaw;
         foreach ($this->inlinePlugins as $plugin) {

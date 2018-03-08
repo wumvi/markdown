@@ -6,15 +6,20 @@ namespace Core\Markdown\Plugin;
 use Core\Markdown\Model\ImageJsonInfo;
 use Core\Markdown\Result\ImageCdnResult;
 use Core\Markdown\Result\SimpleResult;
+use JsonLd\ImageObject;
 
 class ImageCdn extends BlockAbstract
 {
-    private const MATCH = '/^\[img-(?\'bucket\'\w+)-(?\'imgId\'\d+)\]$/';
+    private const MATCH = '/^\[img-(?\'bucket\'\w+)-(?\'imgId\'\d+)(?\'settings\'(?:;\w+)*)\]$/';
     public const TYPE_SIMPLE = 1;
     public const TYPE_YANDEX = 2;
     public const TYPE_AMP = 3;
 
     private $type = self::TYPE_SIMPLE;
+
+    private const SETTINGS_NO_CAPTION = 'nocaption';
+    private const SETTINGS_NO_META = 'nometa';
+    private const SETTINGS_MAIN = 'main';
 
     /**
      * @var string
@@ -35,9 +40,10 @@ class ImageCdn extends BlockAbstract
     public function parse(array $lines, int $pos): SimpleResult
     {
         $line = $lines[$pos];
-        preg_match(self::MATCH, $line, $match);
-        $bucket = $match['bucket'];
-        $imgId = $match['imgId'];
+        preg_match(self::MATCH, $line, $matches);
+        $bucket = $matches['bucket'];
+        $imgId = $matches['imgId'];
+        $settings = array_filter(explode(';', $matches['settings']));
 
         $chunkImgId = $this->getSubPathById($imgId);
 
@@ -55,9 +61,13 @@ class ImageCdn extends BlockAbstract
         $info = new ImageJsonInfo($jsonInfo);
         unset($jsonInfo);
 
+        $isCaption = !in_array(self::SETTINGS_NO_CAPTION, $settings);
+        $isMeta = !in_array(self::SETTINGS_NO_META, $settings);
+        $isMain = in_array(self::SETTINGS_MAIN, $settings);
+
         switch ($this->type) {
             case  self::TYPE_SIMPLE:
-                $html = $this->getSimpleHtml($info);
+                $html = $this->getSimpleHtml($info, $isCaption, $isMeta, $isMain);
                 break;
             case self::TYPE_YANDEX:
                 $html = $this->getYandexHtml($info);
@@ -80,11 +90,12 @@ class ImageCdn extends BlockAbstract
         return implode('/', $path);
     }
 
-    private function getSimpleHtml(ImageJsonInfo $info): string
+    private function getSimpleHtml(ImageJsonInfo $info, bool $isCaption, bool $isMeta, bool $isMain): string
     {
         $tpl = '<div class="imj-wrap js--imj-wrap"
                     data-size=\'' . json_encode($info->getSizes()) . '\'
                     data-trsp="' . ($info->isTransparent() ? 'true' : 'false') . '"
+                    data-modified="' . $info->getModified() . '"
                     style="--ratio: ' . $info->getRatioPercent() . '%; --max-width: ' . $info->getMaxWidth() . 'px;"
                     data-url="' . $info->getCdnPart() . $info->getName() . '">
                       <figure class="imj-figure">
@@ -92,8 +103,22 @@ class ImageCdn extends BlockAbstract
                                src="' . $info->getCdnPart() . 'preview.svg"
                                alt="' . $info->getCaption() . '"
                                title="' . $info->getCaption() . '">';
-        $tpl .= $info->getCaption() ? '<figcaption class="imj-caption">' . $info->getCaption() . '</figcaption>' : '';
+        $tpl .= $info->getCaption() && $isCaption ?
+            '<figcaption class="imj-caption">' . $info->getCaption() . '</figcaption>' : '';
         $tpl .= '</figure></div>';
+
+        if ($isMeta) {
+            $modified = new \DateTime();
+            $modified->setTimestamp($info->getModified());
+            $imageObject = new ImageObject();
+            $imageObject->setContentUrl($info->getMaxImgUrl());
+            $imageObject->setName($info->getCaption());
+            $imageObject->setCaption($info->getCaption());
+            $imageObject->setRepresentativeOfPage($isMain);
+            $imageObject->setDatePublished($modified->format('Y-m-d'));
+
+            $tpl .= '<script type="application/ld+json">' . $imageObject->getJson() . '</script>';
+        }
 
         return $tpl;
     }

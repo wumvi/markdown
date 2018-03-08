@@ -8,7 +8,7 @@ use Core\Markdown\Result\SimpleResult;
 
 class Header extends BlockAbstract
 {
-    const MATCH = '/^(?\'level\'#{1,6})(?\'text\'.*)$/';
+    const MATCH = '/^(?\'level\'#{1,3})(?\'text\'.*)$/';
 
     public function match(string $line): bool
     {
@@ -26,7 +26,7 @@ class Header extends BlockAbstract
         return new HeaderResult($text, $pos, $caption);
     }
 
-    private function inlinePluginAction($textRaw): string
+    protected function inlinePluginAction(string $textRaw): string
     {
         $text = $textRaw;
         foreach($this->inlinePlugins as $plugin) {

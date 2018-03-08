@@ -17,4 +17,14 @@ abstract class BlockAbstract implements BlockPlugin
     {
         $this->inlinePlugins = $plugins;
     }
+
+    protected function inlinePluginAction(string $textRaw): string
+    {
+        $text = $textRaw;
+        foreach ($this->inlinePlugins as $plugin) {
+            $text = $plugin->parse($text);
+        }
+
+        return $text;
+    }
 }

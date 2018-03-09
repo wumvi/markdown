@@ -7,6 +7,8 @@ use Core\Markdown\Model\ImageJsonInfo;
 use Core\Markdown\Result\ImageCdnResult;
 use Core\Markdown\Result\SimpleResult;
 use JsonLd\ImageObject;
+use LightweightCurl\Curl;
+use LightweightCurl\Request;
 
 class ImageCdn extends BlockAbstract
 {
@@ -37,6 +39,13 @@ class ImageCdn extends BlockAbstract
         return (bool)preg_match(self::MATCH, $line);
     }
 
+    /**
+     * @param array $lines
+     * @param int $pos
+     * @return SimpleResult
+     *
+     * @throws
+     */
     public function parse(array $lines, int $pos): SimpleResult
     {
         $line = $lines[$pos];
@@ -48,14 +57,25 @@ class ImageCdn extends BlockAbstract
         $chunkImgId = $this->getSubPathById($imgId);
 
         $jsonUrl = $this->cdnUrl . 'img/' . $bucket . '/' . $chunkImgId . '/info.json';
-        $jsonInfo = file_get_contents($jsonUrl);
-        if (!$jsonInfo) {
-            throw new \Exception('Json info empty');
+        // $jsonInfo = file_get_contents($jsonUrl);
+        $curl = new Curl();
+        $request = new Request();
+        $request->setUrl($jsonUrl);
+        $request->setTimeout(1);
+        $jsonInfo = $curl->call($request);
+        if ($jsonInfo->getHttpCode() !== 200) {
+            return new SimpleResult(
+                sprintf('<!-- Json in "%s" return %s -->', htmlspecialchars($jsonUrl), $jsonInfo->getHttpCode()),
+                $pos
+            );
         }
 
-        $jsonInfo = json_decode($jsonInfo);
+        $jsonInfo = json_decode($jsonInfo->getData());
         if (!$jsonInfo) {
-            throw new \Exception('Wrong json');
+            return new SimpleResult(
+                sprintf('<!-- Wrong json in "%s" -->', htmlspecialchars($jsonUrl)),
+                $pos
+            );
         }
 
         $info = new ImageJsonInfo($jsonInfo);

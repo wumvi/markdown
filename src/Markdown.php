@@ -44,6 +44,7 @@ class Markdown
         /** @var InlineResult|null $inlineResult */
         $inlineResult = null;
         $lines = preg_split("/((\r?\n)|(\r\n?))/", $text);
+        $this->buffer = [];
 
         for ($pos = 0; $pos < count($lines); $pos++) {
             $line = trim($lines[$pos]);
@@ -82,9 +83,19 @@ class Markdown
             $this->buffer[] = $inlineResult;
         }
 
+        return $this->getHtmlByBuffer($this->buffer);
+    }
+
+    /**
+     * @param SimpleResult[] $buffer
+     *
+     * @return string
+     */
+    public function getHtmlByBuffer(array $buffer): string
+    {
         $html = '';
-        foreach ($this->buffer as $buffer) {
-            $html .= $buffer->getText();
+        foreach ($buffer as $item) {
+            $html .= $item->isDisable() ? '' : $item->getText();
         }
 
         return $html;

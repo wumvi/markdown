@@ -21,5 +21,10 @@ $markdown->addBlockPlugin(new Header());
 $markdown->addBlockPlugin(new Example());
 $markdown->addBlockPlugin(new WrapBlock());
 $markdown->addBlockPlugin(new Dynamic());
-$markdown->addBlockPlugin(new ImageCdn('https://msk.cdn.wumvi.com/data/', ImageCdn::TYPE_SIMPLE));
-echo $markdown->parse('[;js--anim param=1&url=wm]');
+$markdown->addBlockPlugin(new ImageCdn('https://msk.cdn.wumvi.com/data/', ImageCdn::TYPE_YANDEX));
+echo $markdown->parse(' 
+[img-whi-40]
+
+[img-whi-40]
+
+');

@@ -15,10 +15,31 @@ class SimpleResult
      */
     private $pos;
 
+    /**
+     * @var bool
+     */
+    private $disable = false;
+
     public function __construct(string $text, int $pos)
     {
         $this->text = $text;
         $this->pos = $pos;
+    }
+
+    /**
+     * @param bool $flag
+     */
+    public function setDisable(bool $flag): void
+    {
+        $this->disable = $flag;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisable(): bool
+    {
+        return $this->disable;
     }
 
     /**

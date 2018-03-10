@@ -99,7 +99,7 @@ class ImageCdn extends BlockAbstract
                 throw new \Exception('Unsupport type ' . $this->type);
         }
 
-        return new ImageCdnResult($html, $pos, $info);
+        return new ImageCdnResult($html, $pos, $info, $isMain);
     }
 
     private function getSubPathById(string $id): string
@@ -147,7 +147,7 @@ class ImageCdn extends BlockAbstract
     {
         $tpl = '<figure class="imj-figure">
                   <img class="imj-img js--imj-img"
-                       src="' . $info->getCdnPart() . 'preview.svg"
+                       src="' . $info->getMaxImgUrl() . '"
                        alt="' . $info->getCaption() . '"
                        title="' . $info->getCaption() . '">';
         $tpl .= $info->getCaption() ? '<figcaption class="imj-caption">' . $info->getCaption() . '</figcaption>' : '';

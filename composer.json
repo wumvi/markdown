@@ -9,7 +9,8 @@
   },
   "require": {
     "php": "^7.1",
-    "wumvi/jsonld": "1.0.5"
+    "wumvi/jsonld": "1.0.5",
+    "wumvi/lightweight-curl": "1.0.19"
   },
   "require-dev": {
     "phpunit/phpunit": "7.0.2",

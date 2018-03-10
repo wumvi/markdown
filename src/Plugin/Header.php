@@ -23,7 +23,7 @@ class Header extends BlockAbstract
         $caption = $this->inlinePluginAction(trim($match['text']));
         $text = '<h' . $level . ' class="txt-header txt-header--level' . $level . '">' . $caption . '</h' . $level . '>';
 
-        return new HeaderResult($text, $pos, $caption);
+        return new HeaderResult($text, $pos, $caption, $level);
     }
 
     protected function inlinePluginAction(string $textRaw): string

@@ -61,17 +61,17 @@ class ImageJsonInfo
 
     public function __construct(\stdClass $info)
     {
-        $this->caption = $info->caption;
-        $this->cdn = $info->cdn;
-        $this->name = $info->name;
-        $this->id = $info->id;
-        $this->bucket = $info->bucket;
-        $this->path = $info->path;
-        $this->ratio = $info->ratio;
-        $this->modified = $info->modified;
-        $this->transparent = $info->transparent;
-        $this->preview = $info->preview;
-        $this->sizes = (array)$info->sizes;
+        $this->caption = $info->caption ?? '';
+        $this->cdn = $info->cdn ?? '';
+        $this->name = $info->name ?? '';
+        $this->id = $info->id ?? 0;
+        $this->bucket = $info->bucket ?? '';
+        $this->path = $info->path ?? '';
+        $this->ratio = $info->ratio ?? 1.5;
+        $this->modified = $info->modified ?? 0;
+        $this->transparent = $info->transparent ?? false;
+        $this->preview = $info->preview ?? false;
+        $this->sizes = (array)$info->sizes ?? [];
     }
 
     /**
@@ -187,5 +187,10 @@ class ImageJsonInfo
             $this->getMaxWidth(),
             $this->transparent ? 'png': 'jpg'
         );
+    }
+
+    public function getContentType(): string
+    {
+        return $this->transparent ? 'image/png' : 'image/jpeg';
     }
 }

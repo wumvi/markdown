@@ -10,15 +10,29 @@ class HeaderResult extends SimpleResult
      */
     private $caption;
 
-    public function __construct(string $text, int $pos, string $caption)
+    /**
+     * @var int
+     */
+    private $level;
+
+    public function __construct(string $text, int $pos, string $caption, int $level)
     {
         parent::__construct($text, $pos);
 
         $this->caption = $caption;
+        $this->level = $level;
     }
 
     public function getCaption(): string
     {
         return $this->caption;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel(): int
+    {
+        return $this->level;
     }
 }

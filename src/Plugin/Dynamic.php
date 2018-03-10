@@ -17,6 +17,10 @@ class Dynamic extends BlockAbstract
 
     public function parse(array $lines, int $pos): SimpleResult
     {
+        if ($this->isClear()) {
+            return new SimpleResult('', $pos);
+        }
+
         $text = preg_replace_callback(self::MATCH, [$this, 'replace'], $lines[$pos]);
 
         return new SimpleResult($text, $pos);

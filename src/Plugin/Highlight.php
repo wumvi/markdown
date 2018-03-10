@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace Core\Markdown\Plugin;
 
-class Highlight implements Inline
+class Highlight extends InlineAbstract
 {
+    private const REPLACE = '<span class="txt-highlight">$1</span>';
+    private const MATCH = '/`(.*?)`/';
+
     public function parse(string $line): string
     {
-        return preg_replace('/`(.*?)`/', '<span class="txt-highlight">$1</span>', $line);
+        return preg_replace(self::MATCH, $this->isClear() ? '' : self::REPLACE, $line);
     }
 }

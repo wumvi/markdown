@@ -11,6 +11,11 @@ abstract class BlockAbstract implements BlockPlugin
     protected $inlinePlugins = [];
 
     /**
+     * @var bool
+     */
+    private $clear = false;
+
+    /**
      * @param Inline[] $plugins
      */
     public function setInlinePlugins(array $plugins): void
@@ -26,5 +31,15 @@ abstract class BlockAbstract implements BlockPlugin
         }
 
         return $text;
+    }
+
+    public function isClear(): bool
+    {
+        return $this->clear;
+    }
+
+    public function setClear(bool $flag): void
+    {
+        $this->clear = $flag;
     }
 }

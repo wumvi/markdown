@@ -10,4 +10,6 @@ interface BlockPlugin
     public function match(string $line): bool;
     public function parse(array $lines, int $pos): SimpleResult;
     public function setInlinePlugins(array $plugins): void;
+    public function isClear(): bool;
+    public function setClear(bool $flag): void;
 }

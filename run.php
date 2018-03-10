@@ -17,14 +17,17 @@ $markdown->addInlinePlugin(new Link());
 $markdown->addInlinePlugin(new Bold());
 $markdown->addInlinePlugin(new WrapInline());
 
+$dy = new Dynamic();
+$dy->setClear(false);
+
 $markdown->addBlockPlugin(new Header());
 $markdown->addBlockPlugin(new Example());
-$markdown->addBlockPlugin(new WrapBlock());
+$markdown->addBlockPlugin($dy);
 $markdown->addBlockPlugin(new Dynamic());
 $markdown->addBlockPlugin(new ImageCdn('https://msk.cdn.wumvi.com/data/', ImageCdn::TYPE_YANDEX));
 echo $markdown->parse(' 
-[img-whi-40]
+ddddd
 
-[img-whi-40]
+[;js-test dff=7]
 
 ');

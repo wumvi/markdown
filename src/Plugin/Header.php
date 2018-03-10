@@ -17,6 +17,10 @@ class Header extends BlockAbstract
 
     public function parse(array $lines, int $pos): SimpleResult
     {
+        if ($this->isClear()) {
+            return new SimpleResult('', $pos);
+        }
+
         $line = $lines[$pos];
         preg_match(self::MATCH, $line, $match);
         $level = strlen($match['level']);
@@ -31,7 +35,7 @@ class Header extends BlockAbstract
         $text = $textRaw;
         foreach($this->inlinePlugins as $plugin) {
             if ($plugin instanceof Link) {
-                $text = $plugin->parse($textRaw);
+                $text = $plugin->parse($text);
             }
         }
 

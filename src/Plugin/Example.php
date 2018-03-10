@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Core\Markdown\Plugin;
 
-use Core\Markdown\Result\HeaderResult;
 use Core\Markdown\Result\SimpleResult;
 
 class Example extends BlockAbstract
@@ -12,7 +11,7 @@ class Example extends BlockAbstract
 
     public function match(string $line): bool
     {
-        return (bool) preg_match(self::MATCH, $line);
+        return (bool)preg_match(self::MATCH, $line);
     }
 
     public function parse(array $lines, int $pos): SimpleResult
@@ -20,7 +19,7 @@ class Example extends BlockAbstract
         $flag = false;
         $endPos = 0;
         $html = '';
-        for($i = $pos + 1; $i < count($lines); $i++) {
+        for ($i = $pos + 1; $i < count($lines); $i++) {
             if (preg_match(self::MATCH, $lines[$i])) {
                 $endPos = $i;
                 break;
@@ -40,6 +39,10 @@ class Example extends BlockAbstract
 
         if ($endPos === 0) {
             return new SimpleResult('```', $pos);
+        }
+
+        if ($this->isClear()) {
+            return new SimpleResult('', $endPos);
         }
 
         $html = $this->inlinePluginAction($html);

@@ -48,6 +48,10 @@ class ImageCdn extends BlockAbstract
      */
     public function parse(array $lines, int $pos): SimpleResult
     {
+        if ($this->isClear()) {
+            return new SimpleResult('', $pos);
+        }
+
         $line = $lines[$pos];
         preg_match(self::MATCH, $line, $matches);
         $bucket = $matches['bucket'];

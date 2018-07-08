@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Core\Markdown\Plugin;
 
-use Core\Markdown\Result\MarketResult;
+use Core\Markdown\Result\MarkerResult;
 use Core\Markdown\Result\SimpleResult;
 
 class Marker extends BlockAbstract
 {
-    private const MATCH = '/^===(?<marker>[^=])+===$/';
+    private const MATCH = '/^===(?<marker>[^=]+)===$/';
 
     public function match(string $line): bool
     {
@@ -19,6 +19,6 @@ class Marker extends BlockAbstract
     {
         preg_match(self::MATCH, $lines[$pos], $match);
 
-        return new MarketResult('', $pos, $match['marker']);
+        return new MarkerResult('', $pos, $match['marker']);
     }
 }

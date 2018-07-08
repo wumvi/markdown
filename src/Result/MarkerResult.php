@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Core\Markdown\Result;
 
-class MarketResult extends SimpleResult
+class MarkerResult extends SimpleResult
 {
     /**
      * @var string

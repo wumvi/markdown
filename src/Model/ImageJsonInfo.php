@@ -164,7 +164,7 @@ class ImageJsonInfo
 
     public function getRatioPercent(): float
     {
-        return $this->ratio * 100;
+        return 1 / $this->ratio * 100;
     }
 
     public function getMaxWidth(): int

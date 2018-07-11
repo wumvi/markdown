@@ -163,11 +163,11 @@ class ImageCdn extends BlockAbstract
     private function getAmpHtml(ImageJsonInfo $info): string
     {
         $width = $info->getMaxWidth() * 3;
-        $height = round($width * $info->getRatio(), 0);
-        $tpl = '<amp-img src="' . $info->getMaxImgUrl() .
-            '" alt="' . $info->getCaption() . '"' .
+        $height = round($width / $info->getRatio(), 0);
+        $tpl = '<amp-img src="' . $info->getMaxImgUrl() . '"' .
+            ' alt="' . $info->getCaption() . '"' .
             ' width=' . $width .
-            ' height=' . $height . '></amp-img>';
+            ' height=' . $height . ' class="amp-img" layout="responsive"></amp-img>';
 
         return $tpl;
     }
